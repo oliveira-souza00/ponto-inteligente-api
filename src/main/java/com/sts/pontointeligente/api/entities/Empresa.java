@@ -1,13 +1,15 @@
 package com.sts.pontointeligente.api.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import antlr.collections.List;
 
@@ -23,13 +25,10 @@ public class Empresa implements Serializable {
 	private Date dataCriacao;
 	private Date dataAtualizacao;
 	private List funcinarios;
-	
 
 	public Empresa() {
 	}
 
-
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
@@ -40,8 +39,7 @@ public class Empresa implements Serializable {
 		this.id = id;
 	}
 
-	
-	@Column(name="razao_social",nullable = false)
+	@Column(name = "razao_social", nullable = false)
 	public String getRazaoSocial() {
 		return razaoSocial;
 	}
@@ -50,20 +48,16 @@ public class Empresa implements Serializable {
 		this.razaoSocial = razaoSocial;
 	}
 
-	
-	@Column(name = "data_criacao",nullable = false)
+	@Column(name = "data_criacao", nullable = false)
 	public Date getDataCriacao() {
 		return dataCriacao;
 	}
 
-	
-	
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
-	
-		
-    @Column(name = "data_atualizacao",nullable = false)
+
+	@Column(name = "data_atualizacao", nullable = false)
 	public Date getDataAtualizacao() {
 		return dataAtualizacao;
 	}
@@ -72,7 +66,23 @@ public class Empresa implements Serializable {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
-	
+	@PreUpdate
+	public void preUpdate() {
+		dataAtualizacao = new Date();
+	}
+
+	@PrePersist
+	public void prePersist() {
+		final Date atual = new Date();
+		dataCriacao = atual;
+		dataAtualizacao = atual;
+	}
+
+	public String toString() {
+		return "Empresa [id=" + id + " razaoSocial=" + razaoSocial + " cnpj=" + cnpj + " dataCriacao=" + dataCriacao
+				+ " dataAtualizacao=" + dataAtualizacao + "]";
+	}
+
 	public List getFuncinarios() {
 		return funcinarios;
 	}
@@ -81,6 +91,7 @@ public class Empresa implements Serializable {
 		this.funcinarios = funcinarios;
 	}
 
+	@Column(name = "cnpj", nullable = false)
 	public String getCnpj() {
 		return cnpj;
 	}
