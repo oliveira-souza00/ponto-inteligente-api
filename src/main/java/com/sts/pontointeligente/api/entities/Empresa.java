@@ -1,5 +1,6 @@
 package com.sts.pontointeligente.api.entities;
 
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -101,4 +102,7 @@ private static final long serialVersionUID = 3960436649365666213L;
 		this.cnpj = cnpj;
 	}
 
+	
+
+	
 }

@@ -14,6 +14,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import com.sts.pontoinligente.api.enums.PerfilEnum;
@@ -191,7 +193,15 @@ public class Funcionario  implements Serializable{
 	}
 	
 	
+	@PreUpdate
+	public void preUpdate() {
+		dataAtualizacao = new Date();
+		}
 	
+	@PrePersist
+	public void prePersist() {
+		
+	}
 	
 	
 	

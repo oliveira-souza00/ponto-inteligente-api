@@ -7,11 +7,12 @@ public class SenhaUtils {
 	/**
 	 * 
 	 * Gera um hash o Bcrypt
+	 * @param <BCryptPasswordEncoder>
 	 * @param senha
 	 * @return String
 	 */
 		
-	public static String gerarBCrypt(String senha) {
+	public static <BCryptPasswordEncoder> String gerarBCrypt(String senha) {
 		if (senha == null) {
 			return senha;
 		}
