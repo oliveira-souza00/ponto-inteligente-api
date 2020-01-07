@@ -1,11 +1,24 @@
 package com.sts.pontointeligente.api.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import com.sts.pontoinligente.api.enums.TipoEnum;
+
 
 @Entity
 @Table(name = "lancamento")
@@ -26,14 +39,19 @@ public class Lancamento implements Serializable {
 
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public long getId() {
 		return id;
 	}
 
+	 
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "data",nullable = false)
 	public Date getData() {
 		return data;
 	}
@@ -74,6 +92,8 @@ public class Lancamento implements Serializable {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo", nullable = false)
 	public TipoEnum getTipo() {
 		return tipo;
 	}
@@ -82,6 +102,7 @@ public class Lancamento implements Serializable {
 		this.tipo = tipo;
 	}
 
+	@ManyToOne(fetch = FetchType.EAGER )
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -91,5 +112,24 @@ public class Lancamento implements Serializable {
 	}
 	
 	
+	@PreUpdate
+    public void preUpdate() {
+        dataAtualizacao = new Date();
+    }
 
+	   @PrePersist
+	    public void prePersist() {
+	        final Date atual = new Date();
+	        dataCriacao = atual;
+	        dataAtualizacao = atual;
+	    }
+	
+	
+	@Override
+	public String toString() {
+		return "Lacamento[id  = " +  id + ", data=" + data + " , descricao = " + descricao + ", localizacao = " + localizacao 
+				+ ", dataCriacao = " + dataCriacao  + " , dataAtualizacao = " + dataAtualizacao + ", Tipo = " + tipo + ", funcionario = " + funcionario + "]";
+		
+	}
+	
 }
